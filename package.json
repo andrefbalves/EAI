@@ -1,5 +1,6 @@
 {
   "name": "lab1",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -13,6 +14,8 @@
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "mysql2": "^2.3.3",
+    "n-gram": "^2.0.1",
+    "stemmer": "^2.0.0",
     "stopword": "^2.0.1"
   }
 }

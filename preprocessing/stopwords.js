@@ -1,7 +1,9 @@
-const { removeStopwords, eng } = require('stopword');
+import { removeStopwords, eng } from 'stopword';
 
 function cleanStopwords(text) {
-    return removeStopwords(text);
+    return removeStopwords(text.split(' '));
 }
 
-//console.log(removeSpecificChars('a re123all!y Int\' "ere32312sti%#"$&/ng st.rin3213gwi\\thso,;:me wo?rds'))
+module.exports = cleanStopwords;
+
+//console.log(cleanStopwords('a really Interesting string with some words'))
