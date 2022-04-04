@@ -1,2 +1,0 @@
-import {stemmer} from 'stemmer';
-
