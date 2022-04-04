@@ -2,7 +2,7 @@ import {stemmer} from 'stemmer';
 import {ngram} from './tokenization.mjs';
 
 export function stemm(n, text) {
-    var words = ngram(n, text.split(" "));
+    var words = text.split(" ");
 
     for (var i = 0; i < words.length; i++) {
         words[i] = stemmer(words[i]);

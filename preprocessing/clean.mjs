@@ -10,10 +10,8 @@ function removeSpecificChars(text) {
     return text.replace(/[^\w\s]|_|\d/g, '');
 }
 
-function cleanText(text) {
-    return removeSpecificChars(removeSpaces(lowerText(text)));
+export function cleanText(text) {
+    return removeSpaces(removeSpecificChars(lowerText(text)));
 }
-
-module.exports = cleanText;
 
 //console.log(cleanText('a re123all!y Int\'"ere32312sti%#"$&/ng st.rin3213g wi\\th so,;:me wo?rds'));
