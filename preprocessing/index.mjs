@@ -11,7 +11,7 @@ export function preprocessing(text, n) {
     result.originalText = text;
     result.n = n;
     result.cleanedText = cleanText(cleanStopwords(text).join(' '));
-    result.stemmedText = stemm(n, result.cleanedText).join(' ');
+    result.stemmedText = stemm(result.cleanedText).join(' ');
     result.textTokens = ngram(n, result.stemmedText.split(' '));
 
     return result;

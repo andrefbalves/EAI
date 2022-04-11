@@ -1,4 +1,5 @@
 import {ngram} from "./tokenization.mjs";
+import {log} from "debug";
 
 export function words(text) {
     return text.split(' ').length;
@@ -25,5 +26,21 @@ function numberOfOccurrences(term, text) {
     return count;
 }
 
-console.log(numberOfOccurrences(['really', 'really'], 'a really really really Interesting string with some words'));
-console.log(numberOfOccurrences( ['really'],'a really really really Interesting string with some words'));
+function tf(term, text) {
+    let array = Array.isArray(term) ? term : [term];
+
+    return numberOfOccurrences(array, text);
+}
+
+function idf(N, dt) {
+    return Math.log(N/dt);
+}
+
+function tfidf(tf, idf) {
+    return tf * idf;
+}
+
+//console.log(numberOfOccurrences(['really', 'really'], 'a really really really Interesting string with some words'));
+//console.log(tf( 'really','a really really really Interesting string with some words'));
+//console.log(idf(2,11));
+//console.log(tfidf(2,2));

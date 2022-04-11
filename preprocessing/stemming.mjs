@@ -1,7 +1,6 @@
 import {stemmer} from 'stemmer';
-import {ngram} from './tokenization.mjs';
 
-export function stemm(n, text) {
+export function stemm(text) {
     var words = text.split(" ");
 
     for (var i = 0; i < words.length; i++) {
