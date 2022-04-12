@@ -40,7 +40,6 @@ function tfidf(tf, idf) {
     return tf * idf;
 }
 
-//console.log(numberOfOccurrences(['really', 'really'], 'a really really really Interesting string with some words'));
 //console.log(tf( 'really','a really really really Interesting string with some words'));
 //console.log(idf(2,11));
 //console.log(tfidf(2,2));
