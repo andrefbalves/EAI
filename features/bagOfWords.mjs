@@ -17,5 +17,5 @@ export function addUniqueTerms(array1, array2) {
 }
 
 //console.log(addUniqueTerms(["Banana", "Orange", "Apple", "Mango"],["Kiwi", "Lemon", "Apple", "Mango"]));
-console.log(addUniqueTerms([["room"], ["on"]], [["on"], ["nice"]]));
-console.log(addUniqueTerms([["room", "on"], ["on", "nice"]], [["on", "nice"], ["nice", "clearli"]]));
+//console.log(addUniqueTerms([["room"], ["on"]], [["on"], ["nice"]]));
+//console.log(addUniqueTerms([["room", "on"], ["on", "nice"]], [["on", "nice"], ["nice", "clearli"]]));
