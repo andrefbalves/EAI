@@ -13,7 +13,7 @@ export function exists(term, text) {
     return JSON.stringify(term) === JSON.stringify(text);
 }
 
-function numberOfOccurrences(term, text) {
+export function numberOfOccurrences(term, text) {
     let array = [];
     let count = 0;
 
