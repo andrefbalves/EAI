@@ -1,5 +1,4 @@
-import {exists} from "../preprocessing/counting.mjs";
-import {numberOfOccurrences} from "../preprocessing/counting.mjs";
+import {exists, numberOfOccurrences, tf} from "../preprocessing/counting.mjs";
 
 export function addUniqueTerms(array1, array2) {
 
@@ -34,20 +33,24 @@ function binaryVector(bagOfWords, arrayOfTerms) {
 function numberOfOccurrencesVector(bagOfWords, arrayOfTerms) {
 
     for (let i = 0; i < bagOfWords.length; i++) {
-        bagOfWords[i].occurrences = 0;
-
-        for (let j = 0; j < arrayOfTerms.length; j++) {
-            if (exists(bagOfWords[i], arrayOfTerms[j])) {
-                bagOfWords[i].occurrences = bagOfWords[i].occurrences + 1;
-            }
-        }
+        bagOfWords[i].occurrences = numberOfOccurrences(bagOfWords[i], arrayOfTerms);
     }
     return bagOfWords;
 }
 
 function tfVector(bagOfWords, arrayOfTerms) {
 
+    for (let i = 0; i < bagOfWords.length; i++) {
+        bagOfWords[i].termFrequency = tf(bagOfWords[i],arrayOfTerms);
+    }
+    return bagOfWords;
 }
 
-console.log(numberOfOccurrencesVector([["room"], ["on"]], [["on"], ["nice"]]));
-console.log(numberOfOccurrencesVector([["room", "on"], ["on", "nice"]], [["on", "nice"], ["nice", "clearli"]]));
+function idfVector(bagOfWords, arrayOfTerms) {
+    return 0;
+}
+
+//console.log(numberOfOccurrencesVector([["room"], ["on"]], [["on"], ["nice"]]));
+//console.log(numberOfOccurrencesVector([["room", "on"], ["on", "nice"]], [["on", "nice"], ["on", "nice"], ["nice", "clearli"]]));
+//console.log(tfVector([["room"], ["on"]], [["on"], ["nice"]]));
+//console.log(tfVector([["room", "on"], ["on", "nice"]], [["on", "nice"], ["on", "nice"], ["nice", "clearli"]]));

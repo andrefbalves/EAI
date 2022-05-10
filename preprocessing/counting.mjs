@@ -14,22 +14,18 @@ export function exists(term, text) {
 }
 
 export function numberOfOccurrences(term, text) {
-    let array = [];
     let count = 0;
 
-    array = ngram(Array.isArray(term) ? term.length : 1, text.split(' '));
-
-    for (let i = 0; i < array.length; i++) {
-        if (exists(term, array[i])) count++;
+    for (let i = 0; i < text.length; i++) {
+        if (exists(term, text[i])) {
+            count = count + 1;
+        }
     }
-
     return count;
 }
 
-function tf(term, text) {
-    let array = Array.isArray(term) ? term : [term];
-
-    return numberOfOccurrences(array, text);
+export function tf(term, text) {
+    return numberOfOccurrences(term, text) / text.length;
 }
 
 function idf(N, dt) {
@@ -40,6 +36,7 @@ function tfidf(tf, idf) {
     return tf * idf;
 }
 
-//console.log(tf( 'really','a really really really Interesting string with some words'));
+//console.log(numberOfOccurrences(["on"], [["on"], ["on"]]));
+//console.log(numberOfOccurrences(["on", "nice"], [["on", "nice"], ["on", "nice"], ["nice", "clearli"]]));
 //console.log(idf(2,11));
 //console.log(tfidf(2,2));
