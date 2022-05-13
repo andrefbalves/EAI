@@ -28,11 +28,11 @@ export function tf(term, text) {
     return numberOfOccurrences(term, text) / text.length;
 }
 
-function idf(N, dt) {
+export function idf(N, dt) {
     return Math.log(N/dt);
 }
 
-function tfidf(tf, idf) {
+export function tfidf(tf, idf) {
     return tf * idf;
 }
 

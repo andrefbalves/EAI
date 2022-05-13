@@ -1,4 +1,4 @@
-import {exists, numberOfOccurrences, tf} from "../preprocessing/counting.mjs";
+import {exists, idf, numberOfOccurrences, tf, tfidf} from "../preprocessing/counting.mjs";
 
 export function addUniqueTerms(array1, array2) {
 
@@ -41,13 +41,21 @@ function numberOfOccurrencesVector(bagOfWords, arrayOfTerms) {
 function tfVector(bagOfWords, arrayOfTerms) {
 
     for (let i = 0; i < bagOfWords.length; i++) {
-        bagOfWords[i].termFrequency = tf(bagOfWords[i],arrayOfTerms);
+        bagOfWords[i].tf = tf(bagOfWords[i],arrayOfTerms);
     }
     return bagOfWords;
 }
 
 function idfVector(bagOfWords, arrayOfTerms) {
-    return 0;
+    return 0;//TODO
+}
+
+function tfidfVector(bagOfWords, arrayOfTerms) {
+
+    for (let i = 0; i < bagOfWords.length; i++) {
+        bagOfWords[i].tfidf = tfidf(tf(bagOfWords[i],arrayOfTerms), idf(bagOfWords[i],arrayOfTerms));//TODO
+    }
+    return bagOfWords;
 }
 
 //console.log(numberOfOccurrencesVector([["room"], ["on"]], [["on"], ["nice"]]));
