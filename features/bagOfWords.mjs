@@ -47,7 +47,14 @@ function tfVector(bagOfWords, arrayOfTerms) {
 }
 
 function idfVector(bagOfWords, arrayOfTerms) {
-    return 0;//TODO
+    let n = arrayOfTerms.length;
+
+    for (let i = 0; i < bagOfWords.length; i++) {
+        let dt = numberOfOccurrences(bagOfWords[i], arrayOfTerms);
+
+        bagOfWords[i].idf = idf(n, dt);
+    }
+    return bagOfWords;//TODO test
 }
 
 function tfidfVector(bagOfWords, arrayOfTerms) {
