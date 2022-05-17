@@ -58,7 +58,50 @@ function tfidfVector(bagOfWords, arrayOfTerms) {
     return bagOfWords;
 }
 
+export function sumVector(objectTermArray) {
+    let objectTerm = [];
+    objectTerm.name = objectTermArray[0].name;
+    objectTerm.binary = 0;
+    objectTerm.occurrences = 0;
+    objectTerm.tf = 0;
+
+    for (let i = 0; i < objectTermArray.length; i++) {
+        objectTerm.binary = objectTerm.binary + objectTermArray[i].binary;
+        objectTerm.occurrences = objectTerm.occurrences + objectTermArray[i].occurrences;
+        objectTerm.tf = objectTerm.tf + objectTermArray[i].tf;
+    }
+
+    objectTerm.idf = objectTermArray[0].idf;
+    objectTerm.tfidf = tfidf(objectTerm.tf, objectTerm.idf);
+
+    return objectTerm;
+}
+
+export function avgVector(objectTermArray) {
+    let objectTerm = [];
+    objectTerm.name = objectTermArray[0].name;
+    objectTerm.binary = 0;
+    objectTerm.occurrences = 0;
+    objectTerm.tf = 0;
+
+    for (let i = 0; i < objectTermArray.length; i++) {
+        objectTerm.binary = objectTerm.binary + objectTermArray[i].binary;
+        objectTerm.occurrences = objectTerm.occurrences + objectTermArray[i].occurrences;
+        objectTerm.tf = objectTerm.tf + objectTermArray[i].tf;
+    }
+
+    objectTerm.binary = objectTerm.binary / objectTermArray.length;
+    objectTerm.occurrences = objectTerm.occurrences / objectTermArray.length;
+    objectTerm.tf = objectTerm.tf / objectTermArray.length;
+    objectTerm.idf = objectTermArray[0].idf;
+    objectTerm.tfidf = tfidf(objectTerm.tf, objectTerm.idf);
+
+    return objectTerm;
+}
+
 //console.log(numberOfOccurrencesVector([["room"], ["on"]], [["on"], ["nice"]]));
 //console.log(numberOfOccurrencesVector([["room", "on"], ["on", "nice"]], [["on", "nice"], ["on", "nice"], ["nice", "clearli"]]));
 //console.log(tfVector([["room"], ["on"]], [["on"], ["nice"]]));
 //console.log(tfVector([["room", "on"], ["on", "nice"]], [["on", "nice"], ["on", "nice"], ["nice", "clearli"]]));
+//console.log(sumVector([{name:"best",binary:1,occurrences:4,tf:0.1,idf:0.01,tfidf:0.001,docId:1},{name:"best",binary:0,occurrences:0,tf:0.0,idf:0.01,tfidf:0.0,docId:2},{name:"best",binary:1,occurrences:1,tf:0.05,idf:0.01,tfidf:0.0005,docId:3}]));
+//console.log(avgVector([{name:"best",binary:1,occurrences:4,tf:0.1,idf:0.01,tfidf:0.001,docId:1},{name:"best",binary:0,occurrences:0,tf:0.0,idf:0.01,tfidf:0.0,docId:2},{name:"best",binary:1,occurrences:1,tf:0.05,idf:0.01,tfidf:0.0005,docId:3}]));
