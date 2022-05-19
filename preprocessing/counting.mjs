@@ -28,8 +28,8 @@ export function tf(term, text) {
     return numberOfOccurrences(term, text) / text.length;
 }
 
-export function idf(N, dt) {
-    return Math.log(N/dt);
+export function idf(n, dt) {
+    return dt === 0 ? 0 : Math.log10(n/dt);
 }
 
 export function tfidf(tf, idf) {

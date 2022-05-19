@@ -54,13 +54,16 @@ function idfVector(bagOfWords, arrayOfTerms) {
 
         bagOfWords[i].idf = idf(n, dt);
     }
-    return bagOfWords;//TODO test
+    return bagOfWords;
 }
 
 function tfidfVector(bagOfWords, arrayOfTerms) {
+    let n = arrayOfTerms.length;
 
     for (let i = 0; i < bagOfWords.length; i++) {
-        bagOfWords[i].tfidf = tfidf(tf(bagOfWords[i],arrayOfTerms), idf(bagOfWords[i],arrayOfTerms));//TODO
+        let dt = numberOfOccurrences(bagOfWords[i], arrayOfTerms);
+
+        bagOfWords[i].tfidf = tfidf(tf(bagOfWords[i],arrayOfTerms), idf(n, dt));
     }
     return bagOfWords;
 }
@@ -112,3 +115,4 @@ export function avgVector(objectTermArray) {
 //console.log(tfVector([["room", "on"], ["on", "nice"]], [["on", "nice"], ["on", "nice"], ["nice", "clearli"]]));
 //console.log(sumVector([{name:"best",binary:1,occurrences:4,tf:0.1,idf:0.01,tfidf:0.001,docId:1},{name:"best",binary:0,occurrences:0,tf:0.0,idf:0.01,tfidf:0.0,docId:2},{name:"best",binary:1,occurrences:1,tf:0.05,idf:0.01,tfidf:0.0005,docId:3}]));
 //console.log(avgVector([{name:"best",binary:1,occurrences:4,tf:0.1,idf:0.01,tfidf:0.001,docId:1},{name:"best",binary:0,occurrences:0,tf:0.0,idf:0.01,tfidf:0.0,docId:2},{name:"best",binary:1,occurrences:1,tf:0.05,idf:0.01,tfidf:0.0005,docId:3}]));
+console.log(idfVector([["room"], ["on"]], [["on"], ["nice"]]));
