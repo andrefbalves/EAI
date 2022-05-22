@@ -4,15 +4,15 @@ import {ngram} from "./tokenization.mjs";
 import {cleanStopwords} from "./stopwords.mjs";
 
 
-export function preprocessing(text, n) {
+export function preprocessing(id, text, n) {
 
-    var result = {};
+    let result = {};
 
+    result.id  = id;
     result.originalText = text;
-    result.n = n;
     result.cleanedText = cleanText(cleanStopwords(text).join(' '));
     result.stemmedText = stemm(result.cleanedText).join(' ');
-    result.textTokens = ngram(n, result.stemmedText.split(' '));
+    result.unigrams = ngram(n, result.stemmedText.split(' '));
 
     return result;
 }

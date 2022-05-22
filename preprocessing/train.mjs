@@ -10,10 +10,15 @@ export async function getTrainingSet(label) {
     return set[0];
 }
 
-function saveFile(happyTrainingSet, notHappyTrainingSet) {
-    let obj = {trainingSet: []};
-
-    obj.trainingSet.push({happy: happyTrainingSet, happyVectors: happyTrainingSet.vectors, notHappy:notHappyTrainingSet, notHappyVectors: notHappyTrainingSet.vectors});
+function saveFile(happyTrainingSet, notHappy) {
+    let obj = {
+        trainingSet: {
+            happy: happyTrainingSet,
+            //happyVectors: happyTrainingSet.vectors,
+            notHappy: notHappy,
+            //notHappyVectors: notHappy.vectors
+        }
+    };
 
     let json = JSON.stringify(obj);
 
@@ -29,28 +34,32 @@ function saveFile(happyTrainingSet, notHappyTrainingSet) {
 async function process() {
     let happySet = await getTrainingSet('happy');
     let notHappySet = await getTrainingSet('not happy');
-    let happyTrainingSet = [];
-    let vectors = [];
-    let notHappyTrainingSet = [];
+    let happy = {docs: []};
+    let notHappy = {docs: []};
+    let bagOfUnigrams = [];
+    let bagOfBigrams = [];
 
     for (let i = 0; i < happySet.length; i++) {
-        happyTrainingSet[i] = preprocessing(happySet[i].description, 1);
-        vectors = addUniqueTerms(vectors, happyTrainingSet[i].textTokens);
-        happyTrainingSet[i].textTokens2 = preprocessing(happySet[i].description, 2).textTokens;
-        vectors = addUniqueTerms(vectors, happyTrainingSet[i].textTokens2);
+        happy.docs[i] = preprocessing(happySet[i].id, happySet[i].description, 1);
+        bagOfUnigrams = addUniqueTerms(bagOfUnigrams, happy.docs[i].unigrams);
+        happy.docs[i].bigrams = preprocessing(happySet[i].id, happySet[i].description, 2).unigrams;
+        bagOfBigrams = addUniqueTerms(bagOfBigrams, happy.docs[i].bigrams);
     }
-    happyTrainingSet.vectors = vectors;
-    vectors = [];
+    happy.bagOfUnigrams = bagOfUnigrams;
+    happy.bagOfBigrams = bagOfBigrams;
+    bagOfUnigrams = [];
+    bagOfBigrams = [];
 
     for (let i = 0; i < notHappySet.length; i++) {
-        notHappyTrainingSet[i] = preprocessing(notHappySet[i].description, 1);
-        vectors = addUniqueTerms(vectors, notHappyTrainingSet[i].textTokens);
-        notHappyTrainingSet[i].textTokens2 = preprocessing(notHappySet[i].description, 2).textTokens;
-        vectors = addUniqueTerms(vectors, notHappyTrainingSet[i].textTokens2);
+        notHappy.docs[i] = preprocessing(happySet[i].id, notHappySet[i].description, 1);
+        bagOfUnigrams = addUniqueTerms(bagOfUnigrams, notHappy.docs[i].unigrams);
+        notHappy.docs[i].bigrams = preprocessing(happySet[i].id, notHappySet[i].description, 2).unigrams;
+        bagOfBigrams = addUniqueTerms(bagOfBigrams, notHappy.docs[i].bigrams);
     }
-    notHappyTrainingSet.vectors = vectors;
+    notHappy.bagOfUnigrams = bagOfUnigrams;
+    notHappy.bagOfBigrams = bagOfBigrams;
 
-    console.log(saveFile(happyTrainingSet, notHappyTrainingSet));
+    console.log(saveFile(happy, notHappy));
 
 }
 
