@@ -45,7 +45,7 @@ async function process() {
     for (let i = 0; i < notHappySet.length; i++) {
         notHappyTrainingSet[i] = preprocessing(notHappySet[i].description, 1);
         vectors = addUniqueTerms(vectors, notHappyTrainingSet[i].textTokens);
-        notHappyTrainingSet[i].textTokens2 = preprocessing(notHappySet[i].description, 2);
+        notHappyTrainingSet[i].textTokens2 = preprocessing(notHappySet[i].description, 2).textTokens;
         vectors = addUniqueTerms(vectors, notHappyTrainingSet[i].textTokens2);
     }
     notHappyTrainingSet.vectors = vectors;

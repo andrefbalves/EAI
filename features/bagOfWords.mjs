@@ -115,4 +115,4 @@ export function avgVector(objectTermArray) {
 //console.log(tfVector([["room", "on"], ["on", "nice"]], [["on", "nice"], ["on", "nice"], ["nice", "clearli"]]));
 //console.log(sumVector([{name:"best",binary:1,occurrences:4,tf:0.1,idf:0.01,tfidf:0.001,docId:1},{name:"best",binary:0,occurrences:0,tf:0.0,idf:0.01,tfidf:0.0,docId:2},{name:"best",binary:1,occurrences:1,tf:0.05,idf:0.01,tfidf:0.0005,docId:3}]));
 //console.log(avgVector([{name:"best",binary:1,occurrences:4,tf:0.1,idf:0.01,tfidf:0.001,docId:1},{name:"best",binary:0,occurrences:0,tf:0.0,idf:0.01,tfidf:0.0,docId:2},{name:"best",binary:1,occurrences:1,tf:0.05,idf:0.01,tfidf:0.0005,docId:3}]));
-console.log(idfVector([["room"], ["on"]], [["on"], ["nice"]]));
+//console.log(idfVector([["room"], ["on"]], [["on"], ["nice"]]));
