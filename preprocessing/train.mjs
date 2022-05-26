@@ -31,6 +31,10 @@ function saveFile(happyTrainingSet, notHappy) {
     return json;
 }
 
+function buildTerm(arrayOfTerms, bagOfWords) {
+    //todo
+}
+
 async function process() {
     let happySet = await getTrainingSet('happy');
     let notHappySet = await getTrainingSet('not happy');
@@ -58,6 +62,8 @@ async function process() {
     }
     notHappy.bagOfUnigrams = bagOfUnigrams;
     notHappy.bagOfBigrams = bagOfBigrams;
+
+    //todo construir classe term nos docs
 
     console.log(saveFile(happy, notHappy));
 
