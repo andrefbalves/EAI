@@ -41,19 +41,24 @@ function buildTerms(docs, bagOfUnigrams, bagOfBigrams) {
 }
 
 function calculateTerms(docs, bagOfUnigrams) {
-    //add all terms to the same array
+    let bagOfWords = [];
+
     for (let i = 0; i < bagOfUnigrams.length; i++) {
         let sameTerms = [];
+        let obj = {};
+        obj.name = bagOfUnigrams[i][0];
 
         for (let j = 0; j < docs.length; j++) {
             sameTerms.push(docs[j].uniTerms.filter(doc => doc.name === bagOfUnigrams[i][0]));
         }
-        bagOfUnigrams[i].sum = sumVector(sameTerms);
-        bagOfUnigrams[i].average = avgVector(sameTerms);
-    }
-    console.log(bagOfUnigrams)
+        obj.sum = sumVector(sameTerms);
+        obj.average = avgVector(sameTerms);
 
-    return bagOfUnigrams;
+        bagOfWords.push(obj);
+    }
+    console.log(bagOfWords);
+
+    return bagOfWords;
 }
 
 async function process() {
