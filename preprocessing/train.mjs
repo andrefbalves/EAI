@@ -1,11 +1,11 @@
 import {preprocessing} from "./index.mjs";
 import db from "../database/config.js";
 import fs from "fs";
-import {addUniqueTerms} from "../features/bagOfWords.mjs";
+import {addUniqueTerms, buildVector} from "../features/bagOfWords.mjs";
 
 export async function getTrainingSet(label) {
     let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " +
-        " WHERE corpus.label = '" + label + "'";
+        " WHERE corpus.label = '" + label + "' LIMIT 2";
     let set = await db.execute(query);
     return set[0];
 }
@@ -31,8 +31,13 @@ function saveFile(happyTrainingSet, notHappy) {
     return json;
 }
 
-function buildTerm(arrayOfTerms, bagOfWords) {
-    //todo
+function buildTerms(docs, bagOfUnigrams, bagOfBigrams) {
+
+    for (let i = 0; i < docs.length; i++) {
+        docs[i].uniTerms = buildVector(bagOfUnigrams, docs[i].unigrams);
+        docs[i].biTerms = buildVector(bagOfBigrams, docs[i].bigrams);
+    }
+    return docs;
 }
 
 async function process() {
@@ -63,7 +68,8 @@ async function process() {
     notHappy.bagOfUnigrams = bagOfUnigrams;
     notHappy.bagOfBigrams = bagOfBigrams;
 
-    //todo construir classe term nos docs
+    happy.docs = buildTerms(happy.docs, happy.bagOfUnigrams, happy.bagOfBigrams);
+    notHappy.docs = buildTerms(notHappy.docs, notHappy.bagOfUnigrams, notHappy.bagOfBigrams);
 
     console.log(saveFile(happy, notHappy));
 

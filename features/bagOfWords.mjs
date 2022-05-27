@@ -16,7 +16,7 @@ export function addUniqueTerms(array1, array2) {
     return array1;
 }
 
-function binaryVector(bagOfWords, arrayOfTerms) {
+/*function binaryVector(bagOfWords, arrayOfTerms) {
 
     for (let i = 0; i < bagOfWords.length; i++) {
         for (let j = 0; j < arrayOfTerms.length; j++) {
@@ -66,6 +66,32 @@ function tfidfVector(bagOfWords, arrayOfTerms) {
         bagOfWords[i].tfidf = tfidf(tf(bagOfWords[i],arrayOfTerms), idf(n, dt));
     }
     return bagOfWords;
+}*/
+
+export function buildVector(bagOfWords, arrayOfTerms) {
+    let n = arrayOfTerms.length;
+    let termArray = [];
+
+    for (let i = 0; i < bagOfWords.length; i++) {
+        let term = {};
+        term.name = bagOfWords[i][1] !== undefined ? bagOfWords[i][0] + ' ' + bagOfWords[i][1] : bagOfWords[i][0];
+
+        for (let j = 0; j < arrayOfTerms.length; j++) {
+            if (!exists(bagOfWords[i], arrayOfTerms[j])) {
+                term.binary = term.binary === 1 ? 1 : 0;
+            } else {
+                term.binary = 1;
+            }
+        }
+
+        term.occurrences = numberOfOccurrences(bagOfWords[i], arrayOfTerms);
+        term.tf = tf(bagOfWords[i],arrayOfTerms);
+        term.idf = idf(n, term.occurrences);
+        term.tfidf = tfidf(tf(bagOfWords[i], arrayOfTerms), term.idf);
+
+        termArray.push(term);
+    }
+    return termArray;
 }
 
 export function sumVector(objectTermArray) {
