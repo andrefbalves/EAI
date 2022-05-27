@@ -6,7 +6,9 @@ export function addUniqueTerms(array1, array2) {
         let x = false;
 
         for (let j = 0; j < array1.length; j++) {
-            if (exists(array2[i], array1[j])) x = true;
+            if (exists(array2[i], array1[j])) {
+                x = true;
+            }
         }
 
         if (x === false) {

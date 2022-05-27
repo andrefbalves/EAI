@@ -40,6 +40,22 @@ function buildTerms(docs, bagOfUnigrams, bagOfBigrams) {
     return docs;
 }
 
+function calculateTerms(docs, bagOfUnigrams) {
+    //add all terms to the same array
+    for (let i = 0; i < bagOfUnigrams.length; i++) {
+        let sameTerms = [];
+
+        for (let j = 0; j < docs.length; j++) {
+            sameTerms.push(docs[j].uniTerms.filter(doc => doc.name === bagOfUnigrams[i][0]));
+        }
+        console.log(sameTerms);
+
+    }
+
+    //percorrer o array e introduzir os mesmos valores noutro array
+    return 1;
+}
+
 async function process() {
     let happySet = await getTrainingSet('happy');
     let notHappySet = await getTrainingSet('not happy');
@@ -69,6 +85,7 @@ async function process() {
     notHappy.bagOfBigrams = bagOfBigrams;
 
     happy.docs = buildTerms(happy.docs, happy.bagOfUnigrams, happy.bagOfBigrams);
+    happy.docs = calculateTerms(happy.docs, happy.bagOfUnigrams);
     notHappy.docs = buildTerms(notHappy.docs, notHappy.bagOfUnigrams, notHappy.bagOfBigrams);
 
     console.log(saveFile(happy, notHappy));
