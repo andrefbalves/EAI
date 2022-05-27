@@ -98,18 +98,18 @@ export function buildVector(bagOfWords, arrayOfTerms) {
 
 export function sumVector(objectTermArray) {
     let objectTerm = [];
-    objectTerm.name = objectTermArray[0].name;
+    objectTerm.name = objectTermArray[0][0].name;
     objectTerm.binary = 0;
     objectTerm.occurrences = 0;
     objectTerm.tf = 0;
 
     for (let i = 0; i < objectTermArray.length; i++) {
-        objectTerm.binary = objectTerm.binary + objectTermArray[i].binary;
-        objectTerm.occurrences = objectTerm.occurrences + objectTermArray[i].occurrences;
-        objectTerm.tf = objectTerm.tf + objectTermArray[i].tf;
+        objectTerm.binary = objectTerm.binary + objectTermArray[i][0].binary;
+        objectTerm.occurrences = objectTerm.occurrences + objectTermArray[i][0].occurrences;
+        objectTerm.tf = objectTerm.tf + objectTermArray[i][0].tf;
     }
 
-    objectTerm.idf = objectTermArray[0].idf;
+    objectTerm.idf = objectTermArray[0][0].idf;
     objectTerm.tfidf = tfidf(objectTerm.tf, objectTerm.idf);
 
     return objectTerm;
@@ -117,21 +117,21 @@ export function sumVector(objectTermArray) {
 
 export function avgVector(objectTermArray) {
     let objectTerm = [];
-    objectTerm.name = objectTermArray[0].name;
+    objectTerm.name = objectTermArray[0][0].name;
     objectTerm.binary = 0;
     objectTerm.occurrences = 0;
     objectTerm.tf = 0;
 
     for (let i = 0; i < objectTermArray.length; i++) {
-        objectTerm.binary = objectTerm.binary + objectTermArray[i].binary;
-        objectTerm.occurrences = objectTerm.occurrences + objectTermArray[i].occurrences;
-        objectTerm.tf = objectTerm.tf + objectTermArray[i].tf;
+        objectTerm.binary = objectTerm.binary + objectTermArray[i][0].binary;
+        objectTerm.occurrences = objectTerm.occurrences + objectTermArray[i][0].occurrences;
+        objectTerm.tf = objectTerm.tf + objectTermArray[i][0].tf;
     }
 
     objectTerm.binary = objectTerm.binary / objectTermArray.length;
     objectTerm.occurrences = objectTerm.occurrences / objectTermArray.length;
     objectTerm.tf = objectTerm.tf / objectTermArray.length;
-    objectTerm.idf = objectTermArray[0].idf;
+    objectTerm.idf = objectTermArray[0][0].idf;
     objectTerm.tfidf = tfidf(objectTerm.tf, objectTerm.idf);
 
     return objectTerm;

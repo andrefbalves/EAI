@@ -1,7 +1,7 @@
 import {preprocessing} from "./index.mjs";
 import db from "../database/config.js";
 import fs from "fs";
-import {addUniqueTerms, buildVector} from "../features/bagOfWords.mjs";
+import {addUniqueTerms, avgVector, buildVector, sumVector} from "../features/bagOfWords.mjs";
 
 export async function getTrainingSet(label) {
     let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " +
@@ -48,12 +48,12 @@ function calculateTerms(docs, bagOfUnigrams) {
         for (let j = 0; j < docs.length; j++) {
             sameTerms.push(docs[j].uniTerms.filter(doc => doc.name === bagOfUnigrams[i][0]));
         }
-        console.log(sameTerms);
-
+        bagOfUnigrams[i].sum = sumVector(sameTerms);
+        bagOfUnigrams[i].average = avgVector(sameTerms);
     }
+    console.log(bagOfUnigrams)
 
-    //percorrer o array e introduzir os mesmos valores noutro array
-    return 1;
+    return bagOfUnigrams;
 }
 
 async function process() {
@@ -85,7 +85,7 @@ async function process() {
     notHappy.bagOfBigrams = bagOfBigrams;
 
     happy.docs = buildTerms(happy.docs, happy.bagOfUnigrams, happy.bagOfBigrams);
-    happy.docs = calculateTerms(happy.docs, happy.bagOfUnigrams);
+    happy.bagOfUnigrams = calculateTerms(happy.docs, happy.bagOfUnigrams);
     notHappy.docs = buildTerms(notHappy.docs, notHappy.bagOfUnigrams, notHappy.bagOfBigrams);
 
     console.log(saveFile(happy, notHappy));
