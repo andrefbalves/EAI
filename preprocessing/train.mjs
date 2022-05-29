@@ -40,7 +40,7 @@ function buildTerms(docs, bagOfUnigrams, bagOfBigrams) {
     return docs;
 }
 
-function calculateTerms(docs, bagOfUnigrams) {
+function calculateUniTerms(docs, bagOfUnigrams) {
     let bagOfWords = [];
 
     for (let i = 0; i < bagOfUnigrams.length; i++) {
@@ -56,7 +56,26 @@ function calculateTerms(docs, bagOfUnigrams) {
 
         bagOfWords.push(obj);
     }
-    console.log(bagOfWords);
+
+    return bagOfWords;
+}
+
+function calculateBiTerms(docs, bagOfBigrams) {
+    let bagOfWords = [];
+
+    for (let i = 0; i < bagOfBigrams.length; i++) {
+        let sameTerms = [];
+        let obj = {};
+        obj.name = bagOfBigrams[i][1] !== undefined ? bagOfBigrams[i][0] + ' ' + bagOfBigrams[i][1] : bagOfBigrams[i][0];
+
+        for (let j = 0; j < docs.length; j++) {
+            sameTerms.push(docs[j].biTerms.filter(doc => doc.name === bagOfBigrams[i][0] + ' ' + bagOfBigrams[i][1]));
+        }
+        obj.sum = sumVector(sameTerms);
+        obj.average = avgVector(sameTerms);
+
+        bagOfWords.push(obj);
+    }
 
     return bagOfWords;
 }
@@ -90,8 +109,11 @@ async function process() {
     notHappy.bagOfBigrams = bagOfBigrams;
 
     happy.docs = buildTerms(happy.docs, happy.bagOfUnigrams, happy.bagOfBigrams);
-    happy.bagOfUnigrams = calculateTerms(happy.docs, happy.bagOfUnigrams);
+    happy.bagOfUnigrams = calculateUniTerms(happy.docs, happy.bagOfUnigrams);
+    happy.bagOfBigrams = calculateBiTerms(happy.docs, happy.bagOfBigrams);
     notHappy.docs = buildTerms(notHappy.docs, notHappy.bagOfUnigrams, notHappy.bagOfBigrams);
+    notHappy.bagOfUnigrams = calculateUniTerms(notHappy.docs, notHappy.bagOfUnigrams);
+    notHappy.bagOfBigrams = calculateBiTerms(notHappy.docs, notHappy.bagOfBigrams);
 
     console.log(saveFile(happy, notHappy));
 

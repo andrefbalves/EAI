@@ -97,7 +97,7 @@ export function buildVector(bagOfWords, arrayOfTerms) {
 }
 
 export function sumVector(objectTermArray) {
-    let objectTerm = [];
+    let objectTerm = {};
     objectTerm.name = objectTermArray[0][0].name;
     objectTerm.binary = 0;
     objectTerm.occurrences = 0;
@@ -116,7 +116,7 @@ export function sumVector(objectTermArray) {
 }
 
 export function avgVector(objectTermArray) {
-    let objectTerm = [];
+    let objectTerm = {};
     objectTerm.name = objectTermArray[0][0].name;
     objectTerm.binary = 0;
     objectTerm.occurrences = 0;
