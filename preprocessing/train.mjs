@@ -4,19 +4,79 @@ import fs from "fs";
 import {addUniqueTerms, avgVector, buildVector, sumVector} from "../features/bagOfWords.mjs";
 
 export async function getTrainingSet(label) {
-    let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " +
-        " WHERE corpus.label = '" + label + "' LIMIT 2";
+    let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " + " WHERE corpus.label = '" + label + "' LIMIT 2";
     let set = await db.execute(query);
     return set[0];
 }
 
-function saveFile(happyTrainingSet, notHappy) {
+async function cleanTrainingSet() {
+    let query = "TRUNCATE TABLE terms";
+
+    await db.execute(query);
+}
+
+async function saveTerms(label, trainingSet) {
+    let query = "INSERT INTO terms (label, operation, typeOfGram, name, `binary`, occurrences, tf, idf, tfidf) VALUES ";
+
+    for (let i = 0; i < trainingSet.bagOfUnigrams.length; i++) {
+
+        query += " ('" + label
+            + "', 'sum', 'unigram', '"
+            + trainingSet.bagOfUnigrams[i].sum.name + "', "
+            + trainingSet.bagOfUnigrams[i].sum.binary + ", "
+            + trainingSet.bagOfUnigrams[i].sum.occurrences + ", "
+            + trainingSet.bagOfUnigrams[i].sum.tf + ", "
+            + trainingSet.bagOfUnigrams[i].sum.idf + ", "
+            + trainingSet.bagOfUnigrams[i].sum.tfidf + "),";
+        query += " ('" + label
+            + "', 'average', 'unigram', '"
+            + trainingSet.bagOfUnigrams[i].average.name + "', "
+            + trainingSet.bagOfUnigrams[i].average.binary + ", "
+            + trainingSet.bagOfUnigrams[i].average.occurrences + ", "
+            + trainingSet.bagOfUnigrams[i].average.tf + ", "
+            + trainingSet.bagOfUnigrams[i].average.idf + ", "
+            + trainingSet.bagOfUnigrams[i].average.tfidf + "),";
+    }
+
+    for (let i = 0; i < trainingSet.bagOfBigrams.length; i++) {
+
+        query += " ('" + label
+            + "', 'sum', 'bigram', '"
+            + trainingSet.bagOfBigrams[i].sum.name + "', "
+            + trainingSet.bagOfBigrams[i].sum.binary + ", "
+            + trainingSet.bagOfBigrams[i].sum.occurrences + ", "
+            + trainingSet.bagOfBigrams[i].sum.tf + ", "
+            + trainingSet.bagOfBigrams[i].sum.idf + ", "
+            + trainingSet.bagOfBigrams[i].sum.tfidf + "),";
+        query += " ('" + label
+            + "', 'average', 'bigram', '"
+            + trainingSet.bagOfBigrams[i].average.name + "', "
+            + trainingSet.bagOfBigrams[i].average.binary + ", "
+            + trainingSet.bagOfBigrams[i].average.occurrences + ", "
+            + trainingSet.bagOfBigrams[i].average.tf + ", "
+            + trainingSet.bagOfBigrams[i].average.idf + ", "
+            + trainingSet.bagOfBigrams[i].average.tfidf + "),";
+    }
+    query = query.replace(/.$/gm, '');
+
+    await db.execute(query);
+
+}
+
+async function save(happyTrainingSet, notHappyTrainingSet) {
+
+    await cleanTrainingSet();
+
+    await saveTerms("happy", happyTrainingSet);
+    await saveTerms("not happy", notHappyTrainingSet);
+
+    saveFile(happyTrainingSet, notHappyTrainingSet);
+}
+
+function saveFile(happyTrainingSet, notHappyTrainingSet) {
     let obj = {
         trainingSet: {
-            happy: happyTrainingSet,
-            //happyVectors: happyTrainingSet.vectors,
-            notHappy: notHappy,
-            //notHappyVectors: notHappy.vectors
+            happy: happyTrainingSet, notHappy: notHappyTrainingSet,
         }
     };
 
@@ -115,8 +175,8 @@ async function process() {
     notHappy.bagOfUnigrams = calculateUniTerms(notHappy.docs, notHappy.bagOfUnigrams);
     notHappy.bagOfBigrams = calculateBiTerms(notHappy.docs, notHappy.bagOfBigrams);
 
-    console.log(saveFile(happy, notHappy));
-
+    await save(happy, notHappy);
+    console.log('Completed');
 }
 
 console.log(process())
