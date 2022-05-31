@@ -4,7 +4,8 @@ import fs from "fs";
 import {addUniqueTerms, avgVector, buildVector, sumVector} from "../features/bagOfWords.mjs";
 
 export async function getTrainingSet(label) {
-    let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " + " WHERE corpus.label = '" + label + "' LIMIT 2";
+    let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " + " WHERE corpus.label = '" + label + "'";
+    //query +=  " LIMIT 2";
     let set = await db.execute(query);
     return set[0];
 }
@@ -21,16 +22,16 @@ async function saveTerms(label, trainingSet) {
     for (let i = 0; i < trainingSet.bagOfUnigrams.length; i++) {
 
         query += " ('" + label
-            + "', 'sum', 'unigram', '"
-            + trainingSet.bagOfUnigrams[i].sum.name + "', "
+            + "', 'sum', 'unigram', '`"
+            + trainingSet.bagOfUnigrams[i].sum.name + "`', "
             + trainingSet.bagOfUnigrams[i].sum.binary + ", "
             + trainingSet.bagOfUnigrams[i].sum.occurrences + ", "
             + trainingSet.bagOfUnigrams[i].sum.tf + ", "
             + trainingSet.bagOfUnigrams[i].sum.idf + ", "
             + trainingSet.bagOfUnigrams[i].sum.tfidf + "),";
         query += " ('" + label
-            + "', 'average', 'unigram', '"
-            + trainingSet.bagOfUnigrams[i].average.name + "', "
+            + "', 'average', 'unigram', '`"
+            + trainingSet.bagOfUnigrams[i].average.name + "`', "
             + trainingSet.bagOfUnigrams[i].average.binary + ", "
             + trainingSet.bagOfUnigrams[i].average.occurrences + ", "
             + trainingSet.bagOfUnigrams[i].average.tf + ", "
@@ -41,16 +42,16 @@ async function saveTerms(label, trainingSet) {
     for (let i = 0; i < trainingSet.bagOfBigrams.length; i++) {
 
         query += " ('" + label
-            + "', 'sum', 'bigram', '"
-            + trainingSet.bagOfBigrams[i].sum.name + "', "
+            + "', 'sum', 'bigram', '`"
+            + trainingSet.bagOfBigrams[i].sum.name + "`', "
             + trainingSet.bagOfBigrams[i].sum.binary + ", "
             + trainingSet.bagOfBigrams[i].sum.occurrences + ", "
             + trainingSet.bagOfBigrams[i].sum.tf + ", "
             + trainingSet.bagOfBigrams[i].sum.idf + ", "
             + trainingSet.bagOfBigrams[i].sum.tfidf + "),";
         query += " ('" + label
-            + "', 'average', 'bigram', '"
-            + trainingSet.bagOfBigrams[i].average.name + "', "
+            + "', 'average', 'bigram', '`"
+            + trainingSet.bagOfBigrams[i].average.name + "`', "
             + trainingSet.bagOfBigrams[i].average.binary + ", "
             + trainingSet.bagOfBigrams[i].average.occurrences + ", "
             + trainingSet.bagOfBigrams[i].average.tf + ", "
@@ -58,7 +59,7 @@ async function saveTerms(label, trainingSet) {
             + trainingSet.bagOfBigrams[i].average.tfidf + "),";
     }
     query = query.replace(/.$/gm, '');
-
+    console.log(query);
     await db.execute(query);
 
 }

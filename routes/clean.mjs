@@ -9,4 +9,4 @@ cleanRouter.get('/', function(req, res, next) {
 
 cleanRouter.post('/', function (req, res, next){
   res.render('clean', {title: 'Text Mining', limit: req.body.number, data: preprocessing(req.body.text, parseInt(req.body.number))});
-})
+});
