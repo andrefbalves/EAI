@@ -2,10 +2,11 @@ import {preprocessing} from "./index.mjs";
 import db from "../database/config.js";
 import fs from "fs";
 import {addUniqueTerms, avgVector, buildVector, sumVector} from "../features/bagOfWords.mjs";
+import {selectKBest} from "../database/terms.js";
 
 export async function getTrainingSet(label) {
     let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " + " WHERE corpus.label = '" + label + "'";
-    //query +=  " LIMIT 2";
+    query +=  " LIMIT 2";
     let set = await db.execute(query);
     return set[0];
 }
@@ -59,9 +60,14 @@ async function saveTerms(label, trainingSet) {
             + trainingSet.bagOfBigrams[i].average.tfidf + "),";
     }
     query = query.replace(/.$/gm, '');
-    console.log(query);
+    //console.log(query);
     await db.execute(query);
+}
 
+async function cleanTemplate() {
+    let query = "UPDATE eai_labs.terms SET name = replace(name, '`','')";
+
+    await db.execute(query);
 }
 
 async function save(happyTrainingSet, notHappyTrainingSet) {
@@ -70,6 +76,7 @@ async function save(happyTrainingSet, notHappyTrainingSet) {
 
     await saveTerms("happy", happyTrainingSet);
     await saveTerms("not happy", notHappyTrainingSet);
+    await cleanTemplate();
 
     saveFile(happyTrainingSet, notHappyTrainingSet);
 }

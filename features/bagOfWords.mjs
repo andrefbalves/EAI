@@ -70,6 +70,11 @@ function tfidfVector(bagOfWords, arrayOfTerms) {
     return bagOfWords;
 }*/
 
+/**
+ * @param {string []} bagOfWords
+ * @param {string []} arrayOfTerms
+ * @returns {Array.<{name: string, binary: number, occurrences: number, tf: number, idf: number, tfidf: number}>}
+ */
 export function buildVector(bagOfWords, arrayOfTerms) {
     let n = arrayOfTerms.length;
     let termArray = [];
@@ -89,7 +94,7 @@ export function buildVector(bagOfWords, arrayOfTerms) {
         term.occurrences = numberOfOccurrences(bagOfWords[i], arrayOfTerms);
         term.tf = tf(bagOfWords[i],arrayOfTerms);
         term.idf = idf(n, term.occurrences);
-        term.tfidf = tfidf(tf(bagOfWords[i], arrayOfTerms), term.idf);
+        term.tfidf = tfidf(term.tf, term.idf);
 
         termArray.push(term);
     }

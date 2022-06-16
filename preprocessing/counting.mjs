@@ -13,19 +13,19 @@ export function exists(term, text) {
     return JSON.stringify(term) === JSON.stringify(text);
 }
 
-export function numberOfOccurrences(term, text) {
+export function numberOfOccurrences(term, arrayOfTerms) {
     let count = 0;
 
-    for (let i = 0; i < text.length; i++) {
-        if (exists(term, text[i])) {
+    for (let i = 0; i < arrayOfTerms.length; i++) {
+        if (exists(term, arrayOfTerms[i])) {
             count = count + 1;
         }
     }
     return count;
 }
 
-export function tf(term, text) {
-    return numberOfOccurrences(term, text) / text.length;
+export function tf(term, arrayOfTerms) {
+    return numberOfOccurrences(term, arrayOfTerms) / arrayOfTerms.length;
 }
 
 export function idf(n, dt) {
