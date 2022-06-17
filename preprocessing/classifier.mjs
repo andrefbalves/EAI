@@ -88,5 +88,15 @@ export async function cosineSimilarity(text) {
 
     return console.log(happySimilarity > notHappySimilarity ? {label: 'happy', similarity: happySimilarity} : {label: 'not happy', similarity: notHappySimilarity});
 }
-//todo testar melhor
+
+async function calculateProbability(label) {
+    let classRecords = await getTrainingSet(label);
+    let allRecords = await getTrainingSet(label);
+
+    return classRecords.length / allRecords.length;
+}
+
+function classify() {
+}
+
 console.log(cosineSimilarity("this is a text husband"));
