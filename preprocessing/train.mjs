@@ -2,7 +2,6 @@ import {preprocessing} from "./index.mjs";
 import db from "../database/config.js";
 import fs from "fs";
 import {addUniqueTerms, avgVector, buildVector, sumVector} from "../features/bagOfWords.mjs";
-import {selectKBest} from "../database/terms.js";
 
 export async function getTrainingSet(label) {
     let query = "SELECT * FROM trainingset INNER JOIN corpus ON trainingset.corpus_id = corpus.id " + " WHERE corpus.label = '" + label + "'";
@@ -11,7 +10,7 @@ export async function getTrainingSet(label) {
     return set[0];
 }
 
-async function cleanTrainingSet() {
+async function cleanTerms() {
     let query = "TRUNCATE TABLE terms";
 
     await db.execute(query);
@@ -72,7 +71,7 @@ async function cleanTemplate() {
 
 async function save(happyTrainingSet, notHappyTrainingSet) {
 
-    await cleanTrainingSet();
+    await cleanTerms();
 
     await saveTerms("happy", happyTrainingSet);
     await saveTerms("not happy", notHappyTrainingSet);
